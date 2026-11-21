@@ -13,6 +13,7 @@ Funziona su macOS, Linux e Windows. Se mancano i pacchetti Python necessari
   scroller.py anteprima          stampa l'anteprima dei messaggi nel ciclo
   scroller.py imposta N TESTO    imposta il messaggio N (1-8) e lo mette nel ciclo
   scroller.py controlla          verifica pacchetti, display e permessi USB
+  scroller.py simboli            mostra i simboli da usare nei messaggi con :nome:
 
 Variabili d'ambiente: SCROLLER_NO_INSTALL=1 disattiva l'installazione automatica.
 """
@@ -237,6 +238,103 @@ ACCENTS_UPPER = {"0300": [(0, 1), (0, 2)], "0301": [(0, 2), (0, 3)],
                  "0302": [(0, 2)], "0308": [(0, 1), (0, 3)]}
 
 
+# ─────────────────────────────── simboli ────────────────────────────────────
+# Icone pixel alte 9 righe (riga 0 = riga degli accenti), "#" = LED acceso.
+# (nomi per :nome: — il primo è quello principale —, caratteri Unicode/emoji che le richiamano, disegno)
+ICONS_SRC = [
+    ("cuore heart love", "♥❤💗💖💕💓🧡💛💚💙💜🖤🤍♡❣", """
+        ......... .##...##. ####.#### ######### ######### .#######. ..#####.. ...###... ....#...."""),
+    ("stella star", "★⭐🌟☆✩✭", """
+        ....#.... ....#.... ...###... ######### .#######. ..#####.. ..##.##.. .##...##. .#.....#."""),
+    ("sorriso smile", "☺🙂😀😃😄😁😊☻😆😂🤣", """
+        ..#####.. .#.....#. #..#.#..# #..#.#..# #.......# #.#...#.# #..###..# .#.....#. ..#####.."""),
+    ("triste sad", "☹🙁😞😢😭😟", """
+        ..#####.. .#.....#. #..#.#..# #..#.#..# #.......# #..###..# #.#...#.# .#.....#. ..#####.."""),
+    ("occhiolino wink", "😉", """
+        ..#####.. .#.....#. #..#....# #..#.##.# #.......# #.#...#.# #..###..# .#.....#. ..#####.."""),
+    ("sole sun", "☀🌞☼", """
+        ....#.... .#..#..#. ..#...#.. ...###... ##.###.## ...###... ..#...#.. .#..#..#. ....#...."""),
+    ("luna moon", "☾🌙🌛🌜☽", """
+        ..### .##.. ##... ##... ##... ##... ##... .##.. ..###"""),
+    ("nuvola cloud", "☁🌥", """
+        ........... ........... ....###.... ..##...#... .#......##. #.........# #.........# .#########.
+        ..........."""),
+    ("ombrello pioggia umbrella rain", "☂☔🌂", """
+        ....#.... ..#####.. .#######. ######### ....#.... ....#.... ....#.... .#..#.... ..##....."""),
+    ("neve snow", "❄❅❆☃", """
+        ....#.... .#..#..#. ..#.#.#.. ...###... ######### ...###... ..#.#.#.. .#..#..#. ....#...."""),
+    ("fulmine bolt", "⚡🗲", """
+        ....## ...##. ..##.. .##### ...##. ..##.. .##... .#.... #....."""),
+    ("nota musica note music", "♪♫🎵🎶♩♬", """
+        ...##.. ...#.#. ...#..# ...#... ...#... .###... ####... ####... .##...."""),
+    ("spunta ok check", "✓✔✅☑", """
+        ........ .......# ......## #....##. ##..##.. .####... ..##.... ........ ........"""),
+    ("croce no cross", "✗✘❌✕✖❎", """
+        ....... #.....# ##...## .##.##. ..###.. .##.##. ##...## #.....# ......."""),
+    ("destra right", "→➡➔➜⇒", """
+        ........ ....#... ....##.. #######. ######## #######. ....##.. ....#... ........"""),
+    ("sinistra left", "←⬅⇐", """
+        ........ ...#.... ..##.... .####### ######## .####### ..##.... ...#.... ........"""),
+    ("su up", "↑⬆", """
+        ...#... ..###.. .#####. ####### ..###.. ..###.. ..###.. ..###.. ......."""),
+    ("giu giù down", "↓⬇", """
+        ....... ..###.. ..###.. ..###.. ..###.. ####### .#####. ..###.. ...#..."""),
+    ("telefono phone", "☎📞☏📱", """
+        ......... .#######. ##.....## ##.###.## ..#####.. .##.#.##. .#######. .#######. ........."""),
+    ("busta mail", "✉📧📩📨💌", """
+        ........... ########### ##.......## #.#.....#.# #..#...#..# #...#.#...# #....#....# ###########
+        ..........."""),
+    ("caffe caffè coffee", "☕", """
+        ..#.#.#... .#.#.#.... .......... ########.. #......### #......#.# #......### .#....#... ..####...."""),
+    ("birra beer", "🍺🍻", """
+        .#####... #######.. #.....### #.#.#.#.# #.#.#.#.# #.#.#.### #.#.#.#.. #.....#.. #######.."""),
+    ("pizza", "🍕", """
+        ######### #.#...#.# .#######. ..#.#.#.. ..#####.. ...#.#... ...###... ....#.... ........."""),
+    ("casa home", "⌂🏠🏡", """
+        ....#.... ...#.#... ..#...#.. .#.....#. ######### .#.....#. .#.##..#. .#.##..#. .#######."""),
+    ("campana bell", "🔔", """
+        ....#.... ...###... ..#####.. ..#####.. ..#####.. .#######. ######### ......... ....#...."""),
+    ("fuoco fire", "🔥", """
+        ...#..... ...##.... ..###..#. .#####.#. .######## #####.### ###...### .##...##. ..#####.."""),
+    ("pollice like", "👍", """
+        ....#.... ...##.... ...#..... .######.. ##.....#. ##.#####. ##.....#. ##.#####. ##.####.."""),
+    ("regalo gift", "🎁", """
+        .##...##. ...#.#... ######### #...#...# ######### .#..#..#. .#..#..#. .#..#..#. .#######."""),
+    ("albero natale tree", "🎄🌲", """
+        ....#.... ...###... ..#####.. ...###... ..#####.. .#######. ######### ....#.... ...###..."""),
+    ("auto car", "🚗🚘", """
+        ........... ........... ..######... .#...#..#.. #....#...## ########### ########### .##....##..
+        .##....##.."""),
+    ("punto dot", "●•⚫⬤", """
+        ..... ..... .###. ##### ##### ##### .###. ..... ....."""),
+    ("quadrato square", "■◼⬛▪", """
+        ..... ..... ##### ##### ##### ##### ##### ..... ....."""),
+    ("rombo diamond", "◆♦🔶🔷", """
+        ..... ..... ..#.. .###. ##### .###. ..#.. ..... ....."""),
+    ("play", "▶►⏵", """
+        .... #... ##.. ###. #### ###. ##.. #... ...."""),
+    ("pausa pause", "⏸", """
+        ..... ##.## ##.## ##.## ##.## ##.## ##.## ##.## ....."""),
+]
+ICONS, ICON_ALIASES, ICON_NAMES, ICON_CHARS = {}, {}, {}, {}
+for _names, _chars, _art in ICONS_SRC:
+    _rows, _key = _art.split(), _names.split()[0]
+    assert len(_rows) == 9 and len({len(r) for r in _rows}) == 1, f"icona {_key} malformata"
+    ICONS[_key] = ([sum(1 << r for r in range(9) if _rows[r][x] == "#") for x in range(len(_rows[0]))], _chars[0])
+    ICON_NAMES[_key] = _names.split()
+    ICON_ALIASES.update(dict.fromkeys(_names.split(), _key))
+    ICON_CHARS.update(dict.fromkeys(_chars, _key))
+SHORTCODE_RE = re.compile(r":([a-zàèéìòù_]+):")
+# selettori di variante, zero-width joiner e toni della pelle: non hanno un disegno proprio
+INVISIBLE = dict.fromkeys([0xFE0E, 0xFE0F, 0x200D, *range(0x1F3FB, 0x1F400)])
+
+
+def expand_text(text):
+    """Sostituisce :nome: con il simbolo corrispondente e toglie i caratteri invisibili delle emoji."""
+    text = SHORTCODE_RE.sub(lambda m: ICONS[ICON_ALIASES[m[1]]][1] if m[1] in ICON_ALIASES else m[0], text)
+    return text.translate(INVISIBLE)
+
+
 def _builtin_base(ch):
     if ch in GLYPH_OVERRIDES:
         return [c << 1 for c in GLYPH_OVERRIDES[ch]]
@@ -398,8 +496,8 @@ def glyph(ch, fs):
     key = (ch, fs["id"], fs["size"], fs["offset"], fs["bold"])
     if key in _glyph_cache:
         return _glyph_cache[key]
-    if fs["id"] == BUILTIN:
-        raw = builtin_glyph(ch)
+    if ch in ICON_CHARS or fs["id"] == BUILTIN:  # i simboli usano sempre i disegni pixel integrati
+        raw = ICONS[ICON_CHARS[ch]][0] if ch in ICON_CHARS else builtin_glyph(ch)
         shift = fs["offset"]  # riga 0 = accenti, maiuscole 1-7, discendenti 8-9
         cols = [((c << shift) if shift >= 0 else (c >> -shift)) & 0x7FF for c in raw]
         while cols and not cols[0]:
@@ -425,7 +523,7 @@ def glyph(ch, fs):
 def render(text, fs):
     """Testo → lista di colonne (int a 11 bit, bit 0 = riga in alto)."""
     cols = []
-    for ch in text:
+    for ch in expand_text(text):
         if cols:
             cols.extend([0] * fs["spacing"])
         cols.extend(glyph(ch, fs))
@@ -562,7 +660,7 @@ def inv(s):
 
 
 def cwidth(ch):
-    if unicodedata.combining(ch):
+    if unicodedata.combining(ch) or unicodedata.category(ch) in ("Mn", "Me", "Cf"):
         return 0
     return 2 if unicodedata.east_asian_width(ch) in "WF" else 1
 
@@ -620,6 +718,32 @@ def led_lines(cols, width, limit=None):
             s.append(("" if code == last else f"\x1b[{code}m") + "▀")
             last = code
         out.append("".join(s) + "\x1b[0m")
+    return out
+
+
+def symbols_grid(width):
+    """Galleria dei simboli: righe di icone LED con il loro :nome: sotto."""
+    cells = []
+    for key, (cols, _) in ICONS.items():
+        while cols and not cols[-1]:
+            cols = cols[:-1]
+        label = f":{key}:"
+        cells.append((cols, label, max(len(label), len(cols)) + 2))
+    rows, cur, used = [], [], 0
+    for cell in cells:
+        if cur and used + cell[2] > width:
+            rows.append(cur)
+            cur, used = [], 0
+        cur.append(cell)
+        used += cell[2]
+    rows.append(cur)
+    out = []
+    for row in rows:
+        led = [""] * 6
+        for cols, _, cw in row:
+            for j, line in enumerate(led_lines(cols, len(cols))):
+                led[j] += line + " " * (cw - len(cols))
+        out += led + ["".join(pad(dim(label), cw) for _, label, cw in row), ""]
     return out
 
 
@@ -910,6 +1034,8 @@ class MainScreen(MenuScreen):
             Item("Prova larghezza", lambda: dim("mostra sul display un rettangolo largo come impostato"),
                  a.test_width),
             Item("Anteprima", lambda: dim("tutti i messaggi nel ciclo"), lambda: a.push(PreviewScreen(a))),
+            Item("Simboli", lambda: dim(f"{len(ICONS)} icone da usare nei messaggi con :nome:"),
+                 lambda: a.push(SymbolsScreen(a))),
             Item("Invia al display", lambda: fg("modifiche da inviare", ACC) if a.dirty else dim("già aggiornato"),
                  a.send),
             Item("Esci", None, a.quit),
@@ -969,9 +1095,10 @@ class MessagesScreen(Screen):
             warn = fg("  ⚠ troppo largo", RED) if m["text"] and overflow(m, width) else ""
             out.append(f"  {fg('❯', ACC) if sel else ' '} {dim(str(i + 1))}  {dot}  {text}  {dim(fx)}{warn}")
         m = self.cfg["messages"][self.sel]
+        text = self.app.editing_text(self.sel)  # anteprima dal vivo mentre scrivi
         out += ["", dim(f"  Anteprima messaggio {self.sel + 1}")]
-        out += self.app.msg_preview(m, w)
-        out += self.app.overflow_lines(m, self.sel)
+        out += self.app.msg_preview(m, w, text)
+        out += self.app.overflow_lines(m, self.sel, text)
         return out
 
     def key(self, k):
@@ -1240,6 +1367,34 @@ class PreviewScreen(Screen):
         return "←→ scorri · esc indietro"
 
 
+class SymbolsScreen(Screen):
+    title = "Simboli"
+
+    def __init__(self, app):
+        super().__init__(app)
+        self.top = 0
+
+    def lines(self, w):
+        intro = [dim("  Scrivi :nome: nel testo di un messaggio (mentre scrivi : compaiono i suggerimenti),"),
+                 dim("  oppure incolla l'emoji: ❤️ ⭐ 😀 ☀️ 🍕 👍 … vengono convertite nel simbolo pixel."), ""]
+        grid = symbols_grid(w - 4)
+        _, h = self.app.term_size
+        room = max(8, h - 22)
+        self.top = max(0, min(self.top, len(grid) - room))
+        return intro + ["  " + l for l in grid[self.top:self.top + room]]
+
+    def key(self, k):
+        if k in ("down", "pgdn"):
+            self.top += 8 if k == "pgdn" else 2
+        elif k in ("up", "pgup"):
+            self.top = max(0, self.top - (8 if k == "pgup" else 2))
+        else:
+            super().key(k)
+
+    def hint(self):
+        return "↑↓ scorri · esc indietro"
+
+
 # ─────────────────────────────── applicazione ───────────────────────────────
 
 COMMANDS = [
@@ -1249,6 +1404,7 @@ COMMANDS = [
     ("/anteprima", "Anteprima dei messaggi nel ciclo"),
     ("/luminosita", "Imposta la luminosità: /luminosita 25|50|75|100"),
     ("/larghezza", "Colonne visibili del display: /larghezza 48"),
+    ("/simboli", "Galleria dei simboli da usare con :nome:"),
     ("/1", "Scrivi il messaggio 1 (da /1 a /8): /3 Buongiorno"),
     ("/esci", "Esci da Scroller"),
 ]
@@ -1407,6 +1563,18 @@ class App:
         self.editor = LineEditor(text)
         self.ectx = {"kind": kind, "label": label, "target": target, "submit": submit}
         self.csel = 0
+        self.isugg_off = False
+
+    def icon_suggestions(self):
+        """(posizione dei ':', [simboli]) se il cursore è dopo un ':nome' parziale nel testo di un messaggio."""
+        if not self.editor or self.ectx["kind"] != "text" or self.isugg_off:
+            return None, []
+        before = "".join(self.editor.buf[:self.editor.pos])
+        m = re.search(r"(?:^|\s):([a-zàèéìòù_]*)$", before)
+        if not m:
+            return None, []
+        pre = m.group(1)
+        return m.start(1) - 1, [k for k, names in ICON_NAMES.items() if any(n.startswith(pre) for n in names)]
 
     def close_editor(self):
         self.editor = self.ectx = None
@@ -1434,6 +1602,8 @@ class App:
             self.open_font(int(arg) - 1 if re.fullmatch(r"[1-8]", arg) else self.current_idx())
         elif cmd == "/anteprima":
             self.goto(PreviewScreen(self))
+        elif cmd == "/simboli":
+            self.goto(SymbolsScreen(self))
         elif cmd == "/esci":
             self.quit()
         elif cmd == "/luminosita":
@@ -1482,6 +1652,20 @@ class App:
                 if text != "/":
                     self.run_command(text)
                 return
+        else:
+            start, sugg = self.icon_suggestions()
+            if sugg and k in ("up", "down"):
+                self.csel = (self.csel + (1 if k == "down" else -1)) % len(sugg)
+                return
+            if sugg and k in ("tab", "enter"):
+                code = f":{sugg[min(self.csel, len(sugg) - 1)]}:"
+                ed.buf[start:ed.pos] = list(code)
+                ed.pos = start + len(code)
+                self.csel = 0
+                return
+            if sugg and k == "esc":
+                self.isugg_off = True  # chiude i suggerimenti, non l'editor
+                return
         if k in ("esc", "ctrl-c"):
             self.close_editor()
         elif k == "enter":
@@ -1491,6 +1675,7 @@ class App:
             submit(text)
         elif ed.key(k):
             self.csel = 0
+            self.isugg_off = False
             if ctx["kind"] == "cmd" and not ed.text:
                 self.close_editor()
 
@@ -1540,7 +1725,17 @@ class App:
         if self.editor and self.ectx["kind"] == "text":
             bottom.append(" " + fg("✎ " + self.ectx["label"], ACC))
             bottom += box([fg(">", ACC) + " " + self.editor.render(w - 7)], w)
-            bottom.append(dim("  enter salva · esc annulla · ctrl+u cancella"))
+            _, sugg = self.icon_suggestions()
+            if sugg:
+                self.csel = min(self.csel, len(sugg) - 1)
+                first = max(0, min(self.csel - 3, len(sugg) - 7))
+                for i in range(first, min(len(sugg), first + 7)):
+                    key = sugg[i]
+                    line = f"  {pad(':' + key + ':', 16)}{ICONS[key][1]}  {' · '.join(ICON_NAMES[key][1:])}"
+                    bottom.append(fg(line, ACC) if i == self.csel else dim(line))
+                bottom.append(dim(f"  tab/enter inserisce il simbolo · esc chiude i suggerimenti · {len(sugg)} simbol{'o' if len(sugg) == 1 else 'i'}"))
+            else:
+                bottom.append(dim("  enter salva · esc annulla · ctrl+u cancella · :nome: per i simboli"))
         elif self.editor:
             bottom += box([fg(">", ACC) + " " + self.editor.render(w - 7)], w)
             sugg = self.suggestions()
@@ -1636,6 +1831,7 @@ def main():
     sub.add_parser("invia", help="invia al display i messaggi salvati")
     sub.add_parser("anteprima", help="stampa l'anteprima dei messaggi nel ciclo")
     sub.add_parser("controlla", help="verifica pacchetti Python, display e permessi USB")
+    sub.add_parser("simboli", help="mostra i simboli da usare nei messaggi con :nome:")
     s = sub.add_parser("imposta", help="imposta il testo di un messaggio e lo mette nel ciclo")
     s.add_argument("n", type=int, choices=range(1, 9), metavar="N")
     s.add_argument("testo", nargs="+")
@@ -1662,6 +1858,11 @@ def main():
         cli_preview(cfg)
     elif a.cmd == "controlla":
         cli_check(cfg)
+    elif a.cmd == "simboli":
+        w = os.get_terminal_size().columns if sys.stdout.isatty() else 100
+        print("Scrivi :nome: nel testo di un messaggio, oppure incolla l'emoji corrispondente.\n")
+        for line in symbols_grid(w - 2):
+            print(" " + line)
     elif a.cmd == "imposta":
         cfg["messages"][a.n - 1].update(text=" ".join(a.testo), enabled=True)
         save_config(cfg)

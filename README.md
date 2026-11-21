@@ -14,6 +14,7 @@ Funziona su **macOS, Linux e Windows** ed è un unico file Python.
   - qualsiasi font TrueType/OpenType del sistema, disegnato a pixel netti
 - anteprima LED colorata direttamente nel terminale, aggiornata mentre scrivi
 - avviso quando un messaggio con scorrimento in su/giù è più largo del display (la parte in eccesso non si vedrebbe)
+- **simboli pixel** (cuore, stella, sole, frecce, pizza, …) da inserire con `:nome:` o incollando l'emoji
 - comandi rapidi con `/` (`/invia`, `/3 Buongiorno`, `/font 2`, `/larghezza 48`, …)
 - rilevamento automatico del display, anche quando lo colleghi o scolleghi
 - installazione automatica dei pacchetti Python mancanti
@@ -60,6 +61,7 @@ python3 scroller.py invia              # invia al display i messaggi salvati
 python3 scroller.py anteprima          # stampa l'anteprima dei messaggi nel ciclo
 python3 scroller.py imposta 2 "Ciao"   # imposta il messaggio 2 e lo mette nel ciclo
 python3 scroller.py controlla          # verifica pacchetti, display e permessi
+python3 scroller.py simboli            # mostra i simboli disponibili
 ```
 
 ### Tasti
@@ -73,6 +75,20 @@ python3 scroller.py controlla          # verifica pacchetti, display e permessi
 | Messaggi | `spazio` | mette il messaggio nel ciclo o lo toglie |
 | Messaggi | `e` · `f` | scrive il testo · sceglie il font |
 | Messaggi | `⇧↑` `⇧↓` (Windows: `ctrl↑` `ctrl↓`) | sposta il messaggio |
+
+### Simboli
+
+Nei messaggi puoi inserire dei simboli disegnati apposta per la matrice LED, in due modi:
+
+- scrivi `:nome:` nel testo, per esempio `Ti amo :cuore:`. Mentre scrivi `:` compaiono i suggerimenti, che
+  scegli con `tab` o `enter`;
+- incolla l'emoji corrispondente (❤️ ⭐ 😀 ☀️ 🍕 👍 …): viene convertita nel simbolo pixel.
+
+I simboli funzionano con qualsiasi font. Sono disponibili anche con il nome inglese (`:heart:`, `:star:`, …):
+
+`:cuore:` ♥ · `:stella:` ★ · `:sorriso:` ☺ · `:triste:` ☹ · `:occhiolino:` 😉 · `:sole:` ☀ · `:luna:` ☾ · `:nuvola:` ☁ · `:ombrello:` ☂ · `:neve:` ❄ · `:fulmine:` ⚡ · `:nota:` ♪ · `:spunta:` ✓ · `:croce:` ✗ · `:destra:` → · `:sinistra:` ← · `:su:` ↑ · `:giu:` ↓ · `:telefono:` ☎ · `:busta:` ✉ · `:caffe:` ☕ · `:birra:` 🍺 · `:pizza:` 🍕 · `:casa:` ⌂ · `:campana:` 🔔 · `:fuoco:` 🔥 · `:pollice:` 👍 · `:regalo:` 🎁 · `:albero:` 🎄 · `:auto:` 🚗 · `:punto:` ● · `:quadrato:` ■ · `:rombo:` ◆ · `:play:` ▶ · `:pausa:` ⏸
+
+La galleria completa si apre dal menu **Simboli**, con `/simboli` o con `python3 scroller.py simboli`.
 
 ### Larghezza del display
 
