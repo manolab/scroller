@@ -107,3 +107,7 @@ Puoi aggiungere altri font `.ttf`/`.otf` (i font "pixel" rendono meglio) in:
 - macOS: `~/Library/Fonts`
 - Linux: `~/.local/share/fonts`
 - Windows: `%LOCALAPPDATA%\Microsoft\Windows\Fonts`
+
+## Licenza
+
+Rilasciato con licenza [MIT](LICENSE).
